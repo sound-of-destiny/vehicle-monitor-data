@@ -1,0 +1,45 @@
+syntax = "proto2";
+
+package protobuf;
+
+option optimize_for = SPEED;
+option java_package = "cn.edu.sdu.vehicleMonitorData";
+option java_outer_classname = "ServerData";
+
+message Protocol {
+
+    required int32 protoType = 1;
+    optional string terminalPhone = 2;
+    optional int32 flowId = 3;
+    oneof dataBody {
+        MediaData mediaData = 10;
+    }
+}
+
+message MediaData {
+    optional int32 mediaId = 1;
+    optional int32 mediaType = 2;
+    optional int32 mediaCode = 3;
+    optional int32 eventCode = 4;
+    optional int32 channelId = 5;
+    optional Location location = 6;
+    optional bytes mediaData = 7;
+}
+
+message Location {
+    optional int32 warningFlag = 1;
+    optional int32 status = 2;
+
+    optional double latitude = 3;
+    optional double longitude = 4;
+    optional int32 elevation = 5;
+    optional double speed = 6;
+    optional int32 direction = 7;
+    optional string time = 8;
+}
+
+
+
+
+
+

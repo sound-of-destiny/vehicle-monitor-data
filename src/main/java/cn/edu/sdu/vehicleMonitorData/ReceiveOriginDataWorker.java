@@ -1,6 +1,8 @@
 package cn.edu.sdu.vehicleMonitorData;
 
 import com.rabbitmq.client.Channel;
+import com.rabbitmq.client.Connection;
+import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.DeliverCallback;
 
 import java.io.DataOutputStream;
@@ -8,22 +10,31 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.time.LocalDate;
 
-public class ReceiveOriginDataWorker1 implements Runnable {
+import static cn.edu.sdu.vehicleMonitorData.MQUtil.*;
+import static cn.edu.sdu.vehicleMonitorData.MQUtil.Password;
 
-    private static final String QUEUE_NAME = "JT808Server_OriginData_Queue";
+public class ReceiveOriginDataWorker implements Runnable {
+
+    private static final String QUEUE_NAME = "jt808_origin_data";
 
     public void run() {
         try {
-            Channel channel = MQUtil.getChannel();
-
+            ConnectionFactory factory = new ConnectionFactory();
+            factory.setHost(IP);
+            factory.setVirtualHost(VirtualHost);
+            factory.setUsername(Username);
+            factory.setPassword(Password);
+            Connection connection = factory.newConnection();
+            Channel channel = connection.createChannel();
             channel.queueDeclare(QUEUE_NAME, true, false, false, null);
             channel.basicQos(1);
 
-            System.out.println(" [*] Origin Worker1 正在等待消息");
+            System.out.println(" [*] Origin Worker 正在等待消息");
 
             DeliverCallback deliverCallback = (consumerTag, delivery) -> {
+                System.out.println("[Origin Worker] 收到消息");
                 try {
-                    File data = new File("./JT808ServerOriginData/" + LocalDate.now() + "-1.bytes");
+                    File data = new File("jt808OriginData/" + LocalDate.now() + ".bytes");
                     DataOutputStream dos = new DataOutputStream(new FileOutputStream(data, true));
                     dos.write(delivery.getBody());
                     dos.close();

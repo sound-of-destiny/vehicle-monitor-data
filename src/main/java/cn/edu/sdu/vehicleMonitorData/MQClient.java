@@ -1,28 +1,23 @@
 package cn.edu.sdu.vehicleMonitorData;
 
 import java.io.File;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class MQClient {
     public static void main(String[] args) {
         try {
-            File file = new File("JT808ServerOriginData");
+            File file = new File("jt808OriginData");
             if (!file.exists()) {
                 if (!file.mkdirs()) {
-                    System.out.print("【创建JT808ServerOriginData文件夹失败】");
-                }
-            }
-            File datePath = new File("JT808ServerShortLocationData");
-            if (!datePath.exists()) {
-                if (!datePath.mkdirs()) {
-                    System.out.print("【创建JT808ServerOriginData文件夹失败】");
+                    System.out.print("【创建JT808OriginData文件夹失败】");
                 }
             }
 
-            new Thread(new ReceiveOriginDataWorker1()).start();
-            new Thread(new ReceiveOriginDataWorker2()).start();
-            new Thread(new ReceiveLocationDataWorker()).start();
-            // TODO 从数据库取terminalPone循环赋值
-            new Thread(new ReceiveShortLocationDataWorker("13827715822")).start();
+            ExecutorService executorService = Executors.newFixedThreadPool(4);
+            executorService.execute(new ReceiveOriginDataWorker());
+            executorService.execute(new ReceiveLocationDataWorker());
+            executorService.execute(new ReceivePhotoWorker());
 
         } catch (Exception e) {
             System.out.println("【程序退出】");

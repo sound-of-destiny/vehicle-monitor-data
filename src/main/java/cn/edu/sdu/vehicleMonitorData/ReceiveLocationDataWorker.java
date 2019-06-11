@@ -6,19 +6,30 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Indexes;
 import com.rabbitmq.client.Channel;
+import com.rabbitmq.client.Connection;
+import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.DeliverCallback;
 import org.bson.Document;
 
 import java.nio.charset.StandardCharsets;
 
+import static cn.edu.sdu.vehicleMonitorData.MQUtil.*;
+
 public class ReceiveLocationDataWorker implements Runnable {
-    private static final String QUEUE_NAME = "JT808Server_LocationData_Queue";
+    private static final String EXCHANGE_NAME = "jt808";
 
     public void run() {
         try {
-            Channel channel = MQUtil.getChannel();
-            channel.queueDeclare(QUEUE_NAME, true, false, false, null);
-            channel.basicQos(1);
+            ConnectionFactory factory = new ConnectionFactory();
+            factory.setHost(IP);
+            factory.setVirtualHost(VirtualHost);
+            factory.setUsername(Username);
+            factory.setPassword(Password);
+            Connection connection = factory.newConnection();
+            Channel channel = connection.createChannel();
+            channel.exchangeDeclare(EXCHANGE_NAME, "topic");
+            String queueName = channel.queueDeclare().getQueue();
+            channel.queueBind(queueName, EXCHANGE_NAME, "location");
 
             System.out.println(" [*] Location Worker 正在等待消息");
 
@@ -27,15 +38,13 @@ public class ReceiveLocationDataWorker implements Runnable {
                 try (MongoClient mongoClient = MongoClients.create("mongodb://202.194.14.72:27017")) {
                     Document document = Document.parse(new String(delivery.getBody(), StandardCharsets.UTF_8));
                     String time = (String) document.get("time");
-                    MongoDatabase mongoDatabase = mongoClient.getDatabase("JT808ServerData");
-                    MongoCollection<Document> collection = mongoDatabase.getCollection("TerminalLocationMsg-" + time.substring(0, 10));
+                    MongoDatabase mongoDatabase = mongoClient.getDatabase("jt808");
+                    MongoCollection<Document> collection = mongoDatabase.getCollection("TerminalLocationMsg-" + time.substring(0, 4));
                     collection.createIndex(Indexes.text("terminalPhone"));
                     collection.insertOne(document);
-                } finally {
-                    channel.basicAck(delivery.getEnvelope().getDeliveryTag(), false);
                 }
             };
-            channel.basicConsume(QUEUE_NAME, false, deliverCallback, consumerTag -> { });
+            channel.basicConsume(queueName, true, deliverCallback, consumerTag -> { });
         } catch (Exception e) {
             e.printStackTrace();
         }
