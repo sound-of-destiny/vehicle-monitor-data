@@ -26,6 +26,6 @@ jar {
         configurations.runtime.collect{zipTree(it)}
     }
     manifest {
-        attributes 'Main-Class': 'cn.edu.sdu.vehicleMonitorData.MQClient'
+        attributes 'Main-Class': 'cn.edu.sdu.commonData.MQClient'
     }
 }

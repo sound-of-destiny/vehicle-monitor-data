@@ -1,4 +1,4 @@
-package cn.edu.sdu.vehicleMonitorData;
+package cn.edu.sdu.commonData.jt808;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

@@ -1,4 +1,4 @@
-package cn.edu.sdu.vehicleMonitorData;
+package cn.edu.sdu.commonData.jt808;
 
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
@@ -13,7 +13,7 @@ import org.bson.Document;
 
 import java.nio.charset.StandardCharsets;
 
-import static cn.edu.sdu.vehicleMonitorData.MQUtil.*;
+import static cn.edu.sdu.commonData.MQUtil.*;
 
 public class ReceiveLocationDataWorker implements Runnable {
     private static final String EXCHANGE_NAME = "jt808";

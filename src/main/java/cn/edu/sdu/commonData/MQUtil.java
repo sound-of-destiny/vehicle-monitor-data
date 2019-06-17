@@ -1,4 +1,4 @@
-package cn.edu.sdu.vehicleMonitorData;
+package cn.edu.sdu.commonData;
 
 public class MQUtil {
 

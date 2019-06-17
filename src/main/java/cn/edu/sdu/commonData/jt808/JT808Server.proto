@@ -3,7 +3,7 @@ syntax = "proto2";
 package protobuf;
 
 option optimize_for = SPEED;
-option java_package = "cn.edu.sdu.vehicleMonitorData";
+option java_package = "cn.edu.sdu.commonData";
 option java_outer_classname = "ServerData";
 
 message Protocol {

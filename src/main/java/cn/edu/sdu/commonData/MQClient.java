@@ -1,4 +1,6 @@
-package cn.edu.sdu.vehicleMonitorData;
+package cn.edu.sdu.commonData;
+
+import cn.edu.sdu.commonData.indoorLocation.ReceiveIndoorLocationWorker;
 
 import java.io.File;
 import java.util.concurrent.ExecutorService;
@@ -15,9 +17,10 @@ public class MQClient {
             }
 
             ExecutorService executorService = Executors.newFixedThreadPool(4);
-            executorService.execute(new ReceiveOriginDataWorker());
-            executorService.execute(new ReceiveLocationDataWorker());
-            executorService.execute(new ReceivePhotoWorker());
+            //executorService.execute(new ReceiveOriginDataWorker());
+            //executorService.execute(new ReceiveLocationDataWorker());
+            //executorService.execute(new ReceivePhotoWorker());
+            executorService.execute(new ReceiveIndoorLocationWorker());
 
         } catch (Exception e) {
             System.out.println("【程序退出】");

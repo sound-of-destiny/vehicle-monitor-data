@@ -1,4 +1,4 @@
-package cn.edu.sdu.vehicleMonitorData;
+package cn.edu.sdu.commonData.jt808;
 
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
@@ -10,8 +10,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.time.LocalDate;
 
-import static cn.edu.sdu.vehicleMonitorData.MQUtil.*;
-import static cn.edu.sdu.vehicleMonitorData.MQUtil.Password;
+import static cn.edu.sdu.commonData.MQUtil.*;
+import static cn.edu.sdu.commonData.MQUtil.Password;
 
 public class ReceiveOriginDataWorker implements Runnable {
 

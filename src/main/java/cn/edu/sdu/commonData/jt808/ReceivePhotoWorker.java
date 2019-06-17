@@ -1,4 +1,4 @@
-package cn.edu.sdu.vehicleMonitorData;
+package cn.edu.sdu.commonData.jt808;
 
 import java.io.DataOutputStream;
 import java.io.File;
@@ -10,8 +10,7 @@ import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.DeliverCallback;
 
-import static cn.edu.sdu.vehicleMonitorData.JT808Mysql.connect_145;
-import static cn.edu.sdu.vehicleMonitorData.MQUtil.*;
+import static cn.edu.sdu.commonData.MQUtil.*;
 
 public class ReceivePhotoWorker implements Runnable {
 	
