@@ -35,7 +35,7 @@ public class ReceiveIndoorLocationWorker implements Runnable {
 
             DeliverCallback deliverCallback = (consumerTag, delivery) -> {
                 System.out.println("[Indoor-Location Worker] 收到消息");
-                try (MongoClient mongoClient = MongoClients.create("mongodb://202.194.14.72:27017")) {
+                try (MongoClient mongoClient = MongoClients.create("mongodb://127.0.0.1:27017")) {
                     Document document = Document.parse(new String(delivery.getBody(), StandardCharsets.UTF_8));
                     Document newDocument = (Document) document.get("data");
                     MongoDatabase mongoDatabase = mongoClient.getDatabase("indoor");

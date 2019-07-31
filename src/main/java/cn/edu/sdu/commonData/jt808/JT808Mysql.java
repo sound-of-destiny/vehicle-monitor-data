@@ -11,7 +11,7 @@ public class JT808Mysql {
             try {
                 Class.forName("com.mysql.cj.jdbc.Driver");
                 conn = DriverManager.getConnection(
-                        "jdbc:mysql://202.194.14.145:3306/vehicle-monitoring?useSSL=true",
+                        "jdbc:mysql://127.0.0.1:3306/vehicle-monitoring?useSSL=true",
                         "root",
                         "qlscadmin"
                 );
